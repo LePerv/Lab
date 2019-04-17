@@ -1,0 +1,18 @@
+//PROLOG
+
+isPower2(Value):-
+    Value == 0 ->  true;
+    Value < 1 ->   false;
+    Value == 1 ->  true;
+    NextValue is Value / 2,
+    isPower2(NextValue).
+
+doWork([], _, Buffer):-
+    print(Buffer).
+
+doWork([Head|Tail], Index, Buffer):-
+    isPower2(Index) ->  
+    append(Buffer, [Head], NextBuffer),
+    doWork(Tail, Index + 1, NextBuffer);
+    doWork(Tail, Index + 1, Buffer).
+    
