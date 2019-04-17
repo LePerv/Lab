@@ -1,0 +1,13 @@
+//PROLOG
+
+isInList(_, []):-
+    false.
+isInList(Value, [Head|Tail]):-
+    Value == Head -> true;
+    isInList(Value, Tail).
+
+removeDuplicates([], Buffer):-
+    print(Buffer).
+removeDuplicates([Head|Tail], Buffer):-
+    isInList(Head, Tail) -> removeDuplicates(Tail, Buffer);
+    removeDuplicates(Tail, [Head|Buffer]).
