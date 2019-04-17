@@ -1,0 +1,15 @@
+pow(_,0,1).
+pow(X,Y,Z) :- Y1 is Y - 1,
+              pow(X,Y1,Z1), Z is Z1*X.
+
+getNFirst([], _, Result, _):-
+    Result = [].
+getNFirst([Head|Tail], N, Result, Index):-
+    N == Index ->  Result = [];
+    NextIndex is Index + 1,
+    getNFirst(Tail, N, NextResult, NextIndex),
+    append([Head], NextResult, Result).
+
+main(_):-
+    getNFirst([1, 2, 3, 4, 5, 6, 7, 8], 99, Result, 0),
+    print(Result).
