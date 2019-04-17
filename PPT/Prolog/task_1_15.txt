@@ -10,4 +10,5 @@ removeDuplicates([], Buffer):-
     print(Buffer).
 removeDuplicates([Head|Tail], Buffer):-
     isInList(Head, Tail) -> removeDuplicates(Tail, Buffer);
-    removeDuplicates(Tail, [Head|Buffer]).
+    append(Buffer, [Head], NextBuffer),
+    removeDuplicates(Tail, NextBuffer).
