@@ -2,14 +2,28 @@ pow(_,0,1).
 pow(X,Y,Z) :- Y1 is Y - 1,
               pow(X,Y1,Z1), Z is Z1*X.
 
-getNFirst([], _, Result, _):-
+getBeforeN([], _, Result, _):-
     Result = [].
-getNFirst([Head|Tail], N, Result, Index):-
+getBeforeN([Head|Tail], N, Result, Index):-
     N == Index ->  Result = [];
     NextIndex is Index + 1,
-    getNFirst(Tail, N, NextResult, NextIndex),
+    getBeforeN(Tail, N, NextResult, NextIndex),
     append([Head], NextResult, Result).
 
-main(_):-
-    getNFirst([1, 2, 3, 4, 5, 6, 7, 8], 99, Result, 0),
-    print(Result).
+getAfterN([], _, Result, _):-
+    Result = [].
+getAfterN([Head|Tail], N, Result, Index):-
+    NextIndex is Index + 1,
+    getAfterN(Tail, N, NextResult, NextIndex),
+    Index > N ->  append([Head], NextResult, Result), print(Result).
+
+splitList([], Result):-
+    Result = [].
+splitList(List, Result):-
+    length(Result, L),
+    pow(2, L, N),
+    print(N),
+    getBeforeN(List, N, Before, 0),
+    getAfterN(List, N, After, 0),
+    splitList(After, NextResult),
+    append([Before], NextResult, Result).
