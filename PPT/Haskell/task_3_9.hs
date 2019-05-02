@@ -2,7 +2,7 @@ alphabet = ["a", "b", "c"]
 states = [0, 1, 2, 3, 4]
 initial = 0
 final = [4]
-transitions = [[1, 2, 3], [1, 4, 4], [4, 1, 4], [4, 4, 1], [-1, -1, -1]]
+transitions = [[1, 2, 3], [1, 4, 4], [4, 1, 4], [4, 4, 1], [4, 4, 4]]
 
 accumIndexOf [] value index = -1
 accumIndexOf list value index =
@@ -15,7 +15,7 @@ indexOf list value =
     accumIndexOf list value 0
 
 accumGetListValue [] i k = undefined
-accumGetListValue list i k = 
+accumGetListValue list i k =
     let h = head list
         t = tail list
     in if i == k
@@ -37,14 +37,12 @@ accumDoWork [] currentState = True
 accumDoWork word currentState =
     if (indexOf final currentState) /= -1
         then False
-        else 
+        else
             let h = head word
                 t = tail word
                 nextState = getMatrixValue transitions currentState (indexOf alphabet h)
-            in if nextState == -1
-                then False
-                else accumDoWork t nextState
-doWork word = 
+            in accumDoWork t nextState
+doWork word =
     accumDoWork word initial
 
 main = do
