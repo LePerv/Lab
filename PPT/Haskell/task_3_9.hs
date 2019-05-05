@@ -1,49 +1,62 @@
+import Data.List
+
 alphabet = ["a", "b", "c"]
 states = [0, 1, 2, 3, 4]
 initial = 0
 final = [4]
 transitions = [[1, 2, 3], [1, 4, 4], [4, 1, 4], [4, 4, 1], [4, 4, 4]]
 
-accumIndexOf [] value index = -1
-accumIndexOf list value index =
-    let h = head list
-        t = tail list
-    in if h == value
-        then index
-        else accumIndexOf t value (index + 1)
-indexOf list value =
-    accumIndexOf list value 0
+checkIfSublist [] _ = False
+checkIfSublist _ [] = True
+checkIfSublist [] [] = True
+checkIfSublist list sublist =
+    let h1 = head list
+        t1 = tail list
+        h2 = head sublist
+        t2 = tail sublist
+    in if h1 == h2
+        then checkIfSublist t1 t2
+        else False
 
-accumGetListValue [] i k = undefined
-accumGetListValue list i k =
-    let h = head list
-        t = tail list
-    in if i == k
-        then h
-        else accumGetListValue t i (k + 1)
-getListValue list i = accumGetListValue list i 0
-
-accumGetMatrixValue [] i j k = undefined
-accumGetMatrixValue matrix i j k =
-    let h = head matrix
-        t = tail matrix
-    in if i == k
-        then getListValue h j
-        else accumGetMatrixValue t i j (k + 1)
-getMatrixValue matrix i j =
-    accumGetMatrixValue matrix i j 0
-
-accumDoWork [] currentState = True
-accumDoWork word currentState =
-    if (indexOf final currentState) /= -1
+accumDoWork word w1 w2 x y z currentState =
+    if (elemIndices currentState final)!!0 /= -1
         then False
-        else
-            let h = head word
-                t = tail word
-                nextState = getMatrixValue transitions currentState (indexOf alphabet h)
-            in accumDoWork t nextState
+        else if word == w1
+            then
+                if word == w2
+                    then True
+                    else
+                        if (checkIfSublist word w2)
+                            then
+                                let l = last w2
+                                in
+                                    let character = word!!((elemIndices l word)!!0 + 1)
+                                    in
+                                        let nextState = (elemIndices character (transitions!!currentState))!!0
+                                            _w2 = w2 ++ [character]
+                                        in accumDoWork word w1 _w2 x y z nextState
+                            else
+                                let _y = y ++ w2
+                                    _w2 = []
+                                in accumDoWork word w1 _w2 x _y z currentState
+            else
+                if (checkIfSublist word w1)
+                    then
+                        let l = last w1
+                        in
+                            let character = word!!(elemIndices l word)!!0 + 1)
+                            in
+                                let nextState = (elemIndices character (transitions!!currentState))!!0
+                                    _w1 = w1 ++ [character]
+                                in accumDoWork word _w1 w2 x y z nextState
+                    else
+                        let _x = x ++ w1
+                            _w1 = []
+                        in accumDoWork word _w1 w2 _x y z currentState
+
+
 doWork word =
-    accumDoWork word initial
+    accumDoWork word [] [] [] [] [] initial
 
 main = do
-    print(doWork ["a", "a", "a", "a", "b", "c"])
+    print(doWork ["a", "a"])
