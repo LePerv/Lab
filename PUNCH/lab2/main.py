@@ -4,11 +4,12 @@ import math
 results = []
 
 def f(x):
-    print('+')
-    results.append(math.sqrt(x))
+    print('f')
+    results.append(math.sqrt(int(x)))
 
 def g(x):
-    results.append(x * x)
+    print('g')
+    results.append(int(x) * int(x))
 
 def checkResults():
     return len(results) == 2
