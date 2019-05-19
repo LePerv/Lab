@@ -4,12 +4,9 @@ import time
 import cv2
 
 camera = cv2.VideoCapture(0)
-
 firstFrame = None
-
-timer1 = time.time() #background update
-
-interval1 = 0.5
+timer1 = time.time()
+interval1 = 0.2
 
 while True:
 	(grabbed, frame) = camera.read()
@@ -50,7 +47,7 @@ while True:
 	cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
 		(10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
-	cv2.imshow("Security Feed", frame)
+	cv2.imshow("Result", frame)
 	cv2.imshow("Thresh", thresh)
 	cv2.imshow("Frame Delta", frameDelta)
 	key = cv2.waitKey(1) & 0xFF
