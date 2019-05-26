@@ -8,7 +8,7 @@
             <th>last name</th>
             <th>rank</th>
             <th>age</th>
-            <th>race id</th>
+            <th>race</th>
         </tr>
         {% for pilot in pilot_list %}
             <tr>
@@ -17,7 +17,7 @@
                 <td>{{ pilot.last_name }}</td>
                 <td>{{ pilot.rank }}</td>
                 <td>{{ pilot.age }}</td>
-                <td>{{ pilot.race }}</td>
+                <td>{{ pilot.race.name }}</td>
             </tr>
         {% endfor %}
     </table>
