@@ -1,0 +1,18 @@
+<a href="../">back</a>
+<p></p>
+{% if race_list %}
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+        </tr>
+        {% for race in race_list %}
+            <tr>
+                <td>{{ race.id }}</td>
+                <td>{{ race.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No races are available.</p>
+{% endif %}

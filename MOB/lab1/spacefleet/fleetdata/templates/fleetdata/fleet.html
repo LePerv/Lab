@@ -1,0 +1,22 @@
+<a href="../">back</a>
+<p></p>
+{% if fleet_list %}
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>chief</th>
+            <th>main race</th>
+        </tr>
+        {% for fleet in fleet_list %}
+            <tr>
+                <td>{{ fleet.id }}</td>
+                <td>{{ fleet.name }}</td>
+                <td>{{ fleet.chief }}</td>
+                <td>{{ fleet.main_race }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No fleets are available.</p>
+{% endif %}

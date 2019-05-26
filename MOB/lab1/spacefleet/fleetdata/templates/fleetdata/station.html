@@ -1,0 +1,26 @@
+<a href="../">back</a>
+<p></p>
+{% if station_list %}
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>coordinates</th>
+            <th>hangar size</th>
+            <th>is military</th>
+            <th>director id</th>
+        </tr>
+        {% for station in station_list %}
+            <tr>
+                <td>{{ station.id }}</td>
+                <td>{{ station.name }}</td>
+                <td>{{ station.coordinates }}</td>
+                <td>{{ station.hangar_size }}</td>
+                <td>{{ station.is_military }}</td>
+                <td>{{ station.director }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No stations are available.</p>
+{% endif %}

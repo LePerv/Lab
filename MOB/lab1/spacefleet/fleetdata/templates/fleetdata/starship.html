@@ -1,0 +1,24 @@
+<a href="../">back</a>
+<p></p>
+{% if starship_list %}
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>pilot id</th>
+            <th>weaponry</th>
+            <th>payload</th>
+        </tr>
+        {% for starship in starship_list %}
+            <tr>
+                <td>{{ starship.id }}</td>
+                <td>{{ starship.name }}</td>
+                <td>{{ starship.pilot }}</td>
+                <td>{{ starship.weaponry }}</td>
+                <td>{{ starship.payload }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No starships are available.</p>
+{% endif %}

@@ -1,0 +1,26 @@
+<a href="../">back</a>
+<p></p>
+{% if pilot_list %}
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>first name</th>
+            <th>last name</th>
+            <th>rank</th>
+            <th>age</th>
+            <th>race id</th>
+        </tr>
+        {% for pilot in pilot_list %}
+            <tr>
+                <td>{{ pilot.id }}</td>
+                <td>{{ pilot.first_name }}</td>
+                <td>{{ pilot.last_name }}</td>
+                <td>{{ pilot.rank }}</td>
+                <td>{{ pilot.age }}</td>
+                <td>{{ pilot.race }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No pilots are available.</p>
+{% endif %}
