@@ -1,6 +1,7 @@
 import math
 import numpy as np 
 import matplotlib.pyplot as plt
+import matplotlib.tri as tri
 
 class ListNode:
     def __init__(self, value):
@@ -219,7 +220,10 @@ def main():
     y_convex_hull = np.array(y_convex_hull)
 
     plt.plot(x_points, y_points, 'o')
-    plt.plot(x_convex_hull, y_convex_hull)
+    # plt.plot(x_convex_hull, y_convex_hull)
+    # plt.show()
+    triang = tri.Triangulation(x_points, y_points)
+    plt.triplot(triang)
     plt.show()
 
 
