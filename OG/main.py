@@ -105,6 +105,13 @@ class Vec2:
     def dup(self):
         return Vec2(self.x, self.y)
 
+    def to_array(self):
+        return [self.x, self.y]
+
+    def set_from_array(self, arr):
+        self.x = arr[0]
+        self.y = arr[1]
+
 
 def calculate_angle(p1, p2, p3):
     return math.acos(p1.sub(p2).dot(p3.sub(p2)) / (p1.distance(p2) * p3.distance(p2)))
@@ -147,7 +154,8 @@ def prepare_points(points, center):
     return result
 
 def build_convex_hull(points):
-    pts = LinkedList(points)
+    ordered = prepare_points(points, find_inner_point(points))
+    pts = LinkedList(ordered)
 
     min_y = points[0].y
     min_point = points[0]
@@ -186,44 +194,73 @@ def build_convex_hull(points):
     pts.add(ListNode(pts.start.value))
     return pts.to_array()
 
+def get_mask(triangles, regions, points):
+    mask = []
+    for tr in triangles:
+        value = False
+        for rg in regions:
+            check1 = points[tr[0]] in rg
+            check2 = points[tr[1]] in rg
+            check3 = points[tr[2]] in rg
+            if check1 and check2 and check3:
+                value = True
+                break
+        mask.append(value)
+    return mask
+
 def main():
     lines = open('input.txt', 'r')
-    points = LinkedList([])
+    points = []
+    regions = [[]]
+    i = 0
     for line in lines:
-        values = line.split(' ')
-        x = float(values[0])
-        y = float(values[1])
-        points.add(ListNode(Vec2(x, y)))
+        if '#' in line:
+            regions.append([])
+            i += 1
+        else:
+            values = line.split(' ')
+            x = float(values[0])
+            y = float(values[1])
+            point = Vec2(x, y)
+            points.append(point)
+            regions[i].append(point)
 
-    q_point = find_inner_point(points.to_array())
-    ordered = prepare_points(points.to_array(), q_point)
-
-    convex_hull = build_convex_hull(ordered)
-    print('\n\n\n')
-    for point in convex_hull:
-        print(point)
+    # convex_hull = build_convex_hull(points)
+    # for point in convex_hull:
+    #     print(point)
 
     x_points = []
     y_points = []
-    x_convex_hull = []
-    y_convex_hull = []
-    for point in points.to_array():
+    # x_convex_hull = []
+    # y_convex_hull = []
+    for point in points:
         x_points.append(point.x)
         y_points.append(point.y)
-    for point in convex_hull:
-        x_convex_hull.append(point.x)
-        y_convex_hull.append(point.y)
+    # for point in convex_hull:
+    #     x_convex_hull.append(point.x)
+    #     y_convex_hull.append(point.y)
 
     x_points = np.array(x_points)
     y_points = np.array(y_points)
-    x_convex_hull = np.array(x_convex_hull)
-    y_convex_hull = np.array(y_convex_hull)
+    # x_convex_hull = np.array(x_convex_hull)
+    # y_convex_hull = np.array(y_convex_hull)
 
     plt.plot(x_points, y_points, 'o')
-    # plt.plot(x_convex_hull, y_convex_hull)
-    # plt.show()
+
+    for rg in regions:
+        x = []
+        y = []
+        for pt in rg:
+            x.append(pt.x)
+            y.append(pt.y)
+        x.append(rg[0].x)
+        y.append(rg[0].y)
+        plt.plot(x, y, color='red')
+
     triang = tri.Triangulation(x_points, y_points)
-    plt.triplot(triang)
+    triang.set_mask(get_mask(triang.triangles, regions, points))
+
+    plt.triplot(triang, color='black')
     plt.show()
 
 
