@@ -3,9 +3,9 @@ from Pyro4 import expose
 import random
 
 
-def dijkstra(weights, start, end):
+def dijkstra(weights, v):
     INFINITY = float('inf')
-    a = start
+    a = v
     n = len(weights)
     distances = [INFINITY for x in range(0, n)]
     visited = [False for x in range(0, n)]
@@ -22,18 +22,18 @@ def dijkstra(weights, start, end):
         visited[a] = True
 
         min_index = -1
-        min_distannce = INFINITY
+        min_distance = INFINITY
         for i in range(0, n):
-            if distances[i] < min_distannce and not visited[i]:
+            if distances[i] < min_distance and not visited[i]:
                 min_index = i
-                min_distannce = distances[i]
+                min_distance = distances[i]
 
         if min_index != -1:
             a = min_index
         else:
             break
 
-    return distances[end]
+    return distances
 
 class Solver:
     def __init__(self, workers=None, input_file_name=None, output_file_name=None):
@@ -68,7 +68,7 @@ class Solver:
     def mymap(a, b, weights):
         res = []
         for i in xrange(a, b):
-            res.append(dijkstra(weights, 0, i))
+            res.append(dijkstra(weights, i))
         return res
 
     @staticmethod
